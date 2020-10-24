@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}OrderProduct index{% endblock %}
+
+{% block body %}
+    <h1>OrderProduct index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Date</th>
+                <th>Marketplace</th>
+                <th>Quantité</th>
+                <th>Label</th>
+                <th>Prix</th>
+                <th>Référence</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for order_product in order_products %}
+            <tr>
+                <td>{{ order_product.id }}</td>
+                <td>{{ order_product.created_at|date("d-m-Y")}}</td>
+                <td>{{ order_product.marketplace }}</td>
+                <td>{{ order_product.qte }}</td>
+                <td>{{ order_product.label }}</td>
+                <td>{{ order_product.price }}</td>
+                <td>{{ order_product.ref }}</td>
+                <td>
+                    <a href="{{ path('order_product_show', {'id': order_product.id}) }}">show</a>
+                    <a href="{{ path('order_product_edit', {'id': order_product.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="3">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('order_product_new') }}">Create new</a>
+{% endblock %}

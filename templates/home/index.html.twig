@@ -1,0 +1,48 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Hello HomeController!{% endblock %}
+
+{% block body %}
+    <h2>Liste des commandes</h2>
+    <table class="table">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Date</th>
+            <th>Marketplace</th>
+            <th>Quantité</th>
+            <th>Label</th>
+            <th>Prix</th>
+            <th>Référence</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for order in orders %}
+        <tr>
+            <td>{{ order.id }}</td>
+            <td>{{ order.created_at|date("d-m-Y")}}</td>
+            <td>{{ order.marketplace }}</td>
+            <td>{{ order.qte }}</td>
+            <td>{{ order.label }}</td>
+            <td>{{ order.price }}</td>
+            <td>{{ order.ref }}</td>
+{#            <td>{{ order.firstname }}</td>#}
+            <td>
+                <div class="dropdown">
+                    <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown">
+                        actions
+                    </button>
+                    <div class="dropdown-menu">
+                        <a class="dropdown-item" href="{{ path('show', {'id': order.id}) }}">Consulter</a>
+                        <a class="dropdown-item" href="{{ path('edit', {'id': order.id}) }}">Editer</a>
+                        <a class="dropdown-item" href="#">Supprimer</a>
+                    </div>
+                </div>
+            </td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <a href="{{ path('add') }}"><button type="button" class="btn btn-primary">Ajouter une nouvelle</button></a>
+{% endblock %}
