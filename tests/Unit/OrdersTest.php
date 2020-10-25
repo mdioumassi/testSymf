@@ -4,6 +4,7 @@
 namespace App\Tests\Unit;
 
 
+use App\Entity\Address;
 use App\Entity\Order;
 use App\Entity\OrderProduct;
 use App\Entity\Product;
@@ -28,16 +29,22 @@ class OrdersTest extends TestCase
         $order = new Order();
         $user = new Users();
         $product = new Product();
+        $address = new Address();
 
         $product
             ->setPrice('10')
             ->setLabel('Crème')
             ->setRef('4122');
+        $address
+            ->setStreet('rue emile zola')
+            ->setZip('93300')
+            ->setCity('La courneuve');
 
         $user
             ->setFirstname('Sidi')
             ->setLastname('Diawara')
-            ->setEmail('toto@tata.fr');
+            ->setEmail('toto@tata.fr')
+            ->setAddress($address);
 
         $order
             ->setUsers($user)
