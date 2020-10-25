@@ -30,24 +30,6 @@ class Address
     private $zip;
 
     /**
-     * @return mixed
-     */
-    public function getZip()
-    {
-        return $this->zip;
-    }
-
-    /**
-     * @param mixed $zip
-     * @return Address
-     */
-    public function setZip($zip)
-    {
-        $this->zip = $zip;
-        return $this;
-    }
-
-    /**
      * @ORM\Column(type="string", length=255)
      */
     private $city;
@@ -79,17 +61,23 @@ class Address
         return $this;
     }
 
-//    public function getZip(): ?int
-//    {
-//        return $this->zip;
-//    }
-//
-//    public function setZip(int $zip): self
-//    {
-//        $this->zip = $zip;
-//
-//        return $this;
-//    }
+    /**
+     * @return mixed
+     */
+    public function getZip()
+    {
+        return $this->zip;
+    }
+
+    /**
+     * @param mixed $zip
+     * @return Address
+     */
+    public function setZip($zip)
+    {
+        $this->zip = $zip;
+        return $this;
+    }
 
     public function getCity(): ?string
     {
