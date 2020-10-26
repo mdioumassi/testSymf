@@ -21,13 +21,15 @@ class OrderProductController extends AbstractController
      */
     public function index(OrderProductRepository $orderProductRepository, Request $request): Response
     {
+        $order_products = $orderProductRepository->findAllorder();
+      //  dd($order_products);
         $form = $this->createForm(SearchOrdersType::class);
         $search = $form->handleRequest($request);
-//        if ($search->isSubmitted() && $search->isValid()) {
-//            $mot = $search->get('mots')->getData();
-//            //dd($mot);
-//        }
-        $order_products = $orderProductRepository->findAllorder();
+        if ($form->isSubmitted() && $form->isValid()) {
+            $mots = $search->get('mots')->getData();
+            $order_products = $orderProductRepository->search($mots);
+        }
+
         if (!$order_products) {
             throw $this->createNotFoundException('No data found');
            // return $this->redirectToRoute('order_product_new');

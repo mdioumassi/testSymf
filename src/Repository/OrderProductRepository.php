@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\OrderProduct;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -14,9 +15,10 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class OrderProductRepository extends ServiceEntityRepository
 {
-    public function __construct(ManagerRegistry $registry)
+    public function __construct(ManagerRegistry $registry, EntityManagerInterface $manager)
     {
         parent::__construct($registry, OrderProduct::class);
+       // $this->_em = $manager;
     }
 //select o.id, o.marketplace, o.created_at, p.label, p.price, p.ref, u.firstname, u.lastname, u.email, a.street, a.zip, a.city
 //from order_product
@@ -36,6 +38,17 @@ class OrderProductRepository extends ServiceEntityRepository
             ;
     }
 
+    public function getDQLOrders()
+    {
+        return $this->createQueryBuilder('op')
+            ->select('op.id', 'o.marketplace', 'o.created_at','p.label', 'p.price', 'p.ref', 'op.qte','u.firstname', 'u.lastname')
+            ->join('op.orders', 'o')
+            ->join('o.users', 'u')
+            ->join('op.products', 'p')
+            ->getQuery()
+            ->getDQL()
+            ;
+    }
     public function findOneOrder($orderId)
     {
         return $this->createQueryBuilder('op')
@@ -63,6 +76,21 @@ class OrderProductRepository extends ServiceEntityRepository
             ->getQuery()
             ->getOneOrNullResult()
             ;
+    }
+    public function search($mots)
+    {
+        return $this->createQueryBuilder('op')
+            ->select('op.id', 'o.marketplace', 'o.created_at','p.label', 'p.price', 'p.ref', 'op.qte','u.firstname', 'u.lastname')
+            ->join('op.orders', 'o')
+            ->join('o.users', 'u')
+            ->join('op.products', 'p')
+            ->where('MATCH(p.label, p.ref) AGAINST (:mots boolean) > 0')
+            ->orWhere('MATCH(o.marketplace) AGAINST (:mots boolean) > 0')
+            ->setParameter('mots', $mots)
+            ->getQuery()
+            ->getResult()
+            ;
+
     }
     // /**
     //  * @return OrderProduct[] Returns an array of OrderProduct objects

@@ -21,6 +21,7 @@ final class Version20201025192226 extends AbstractMigration
     {
         // this up() migration is auto-generated, please modify it to your needs
         $this->addSql('CREATE FULLTEXT INDEX IDX_F52993986634DA66 ON `order` (marketplace)');
+        $this->addSql('CREATE FULLTEXT INDEX product_label_ref_index ON `product` (label, ref);');
     }
 
     public function down(Schema $schema) : void

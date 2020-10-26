@@ -53,6 +53,20 @@ class OrderRepository extends ServiceEntityRepository
             ->getOneOrNullResult()
             ;
     }
+    public function search($mots = null)
+    {
+        return $this->createQueryBuilder('o')
+            //->select('o.id', 'o.marketplace', 'o.created_at', 'u.firstname', 'u.lastname')
+           // ->join('op.orders', 'o')
+            //->join('o.users', 'u')
+           // ->join('op.products', 'p')
+            ->where('MATCH(o.marketplace) AGAINST (:mots boolean) > 0')
+            ->setParameter('mots', $mots)
+            ->getQuery()
+            ->getResult()
+            ;
+
+    }
     // /**
     //  * @return Order[] Returns an array of Order objects
     //  */
